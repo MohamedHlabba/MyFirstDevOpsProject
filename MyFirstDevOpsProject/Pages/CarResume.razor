@@ -1,0 +1,42 @@
+﻿
+@page "/carresume"
+
+<h1 class="page-title">All Cars</h1>
+
+@if (Cars == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Car ID</th>
+                <th>Car name</th>
+                <th>Car Model</th>
+                <th>Car Brand</th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var car in Cars)
+            {
+                <tr>
+                    <td><img src="@($"https://via.placeholder.com/30")" class="rounded-circle" /></td>
+                    <td>@car.CarId</td>
+                    <td>@car.Name</td>
+                    <td>@car.Model</td>
+                    <td>@car.Brand</td>
+                    <td>
+                        <a href="@($"cardetail/{car.CarId}")" class="btn btn-primary table-btn">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
