@@ -1,0 +1,32 @@
+﻿@page "/createcar"
+@inject HttpClient HttpClient
+
+<h3>CreateCar</h3>
+<form>
+    <EditForm Model="@car">
+        <div class="form-group row">
+            <label for="name" class="col-sm-3">name: </label>
+            <InputText id="name" class="form-control col-sm-8" @bind-Value="@car.Name" placeholder="Enter  name"></InputText>
+
+        </div>
+
+        <div class="form-group row">
+            <label for="model" class="col-sm-3">Model name: </label>
+            <InputText id="model" class="form-control col-sm-8" @bind-Value="@car.Model" placeholder="Enter model"></InputText>
+        </div>
+        <button type="submit" @onclick="AddCar" class="btn btn-primary edit-btn">Create Car</button>
+    </EditForm>
+</form>
+
+        @code {
+            private Car car = new Car();
+            public async Task  AddCar()
+            {
+
+                car.ImageUrl = "https://picsum.photos/id/1/200/300";
+                await HttpClient.PostAsJsonAsync("https://dbuser13-funcapp.azurewebsites.net/api/cars",car);
+                car = new Car();
+
+            }
+
+        }

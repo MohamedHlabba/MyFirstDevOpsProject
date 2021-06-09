@@ -1,5 +1,6 @@
 ﻿
 @page "/carresume"
+@inject HttpClient http
 
 <h1 class="page-title">All Cars</h1>
 
@@ -26,12 +27,15 @@ else
             {
                 <tr>
                     <td><img src="@($"https://via.placeholder.com/30")" class="rounded-circle" /></td>
-                    <td>@car.CarId</td>
+                    
+
+                    <td>@car.Id</td>
                     <td>@car.Name</td>
                     <td>@car.Model</td>
                     <td>@car.Brand</td>
+                    <td>@car.ImageUrl</td>
                     <td>
-                        <a href="@($"cardetail/{car.CarId}")" class="btn btn-primary table-btn">
+                        <a href="@($"cardetail/{car.Id}")" class="btn btn-primary table-btn">
                             <i class="fas fa-info-circle"></i>
                         </a>
                     </td>
@@ -39,4 +43,14 @@ else
             }
         </tbody>
     </table>
+}
+@code{
+    public IEnumerable<Car> Cars { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        Cars = new List<Car>();
+        Cars = await http.GetFromJsonAsync<IEnumerable<Car>>("https://dbuser13-funcapp.azurewebsites.net/api/GetCars");
+    }
 }

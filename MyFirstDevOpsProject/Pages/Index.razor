@@ -1,6 +1,83 @@
 ﻿@page "/"
+@inject HttpClient http
 
-<h1>Hello, world!</h1>
+<MudLayout>
+    <MudAppBar Elevation="1" Color="Color.Dark">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        <span></span>
+        <span></span>
+        <MudText Typo="Typo.subtitle1">   Old School Cars</MudText>
+        <MudAppBarSpacer />
+        <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Surface">
+            <MudMenuItem>Profile</MudMenuItem>
+            <MudMenuItem>My account</MudMenuItem>
+            <MudMenuItem>Logout</MudMenuItem>
+        </MudMenu>
+        <MudAvatar Size="Size.Small" Color="Color.Tertiary" Class="ma-2">MH</MudAvatar>
+        <MudAvatar Size="Size.Small" Image="/images/avatar.jpg" />
+        <MudIconButton Size="Size.Medium" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/MohamedHlabba" Target="_blank" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="@open" Elevation="1">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">Old School  Cars</MudText>
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavLink Match="NavLinkMatch.All">Dashboard</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All">Library</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All">Community</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
+    <MudCarousel Style="height:400px;font-weight:500" ShowArrows="@arrows" ShowDelimiters="@delimiters" AutoCycle="@autocycle" TData="object">
+        <MudCarouselItem Transition="transition">
+            <MudCardMedia Image="/images/car1.jpg" />
 
-Welcome to your new app.
+        </MudCarouselItem>
+        <MudCarouselItem Transition="transition">
+            <MudCardMedia Image="/images/car2.jpg" />
+        </MudCarouselItem>
+        <MudCarouselItem Transition="transition">
+            <MudCardMedia Image="/images/car3.jpg" />
+        </MudCarouselItem>
+    </MudCarousel>
+    
+    <MudGrid Justify="Justify.Center">
+        @foreach (var car in Cars)
+        {
+            <MudItem>
+                <MudCard>
+                    <MudCardMedia Image="https://via.placeholder.com/150"/>
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5">@car.Model</MudText>
+                        <MudText Typo="Typo.body2">Old paint found on a stone house door.</MudText>
+                        <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudRating SelectedValue="3" MaxValue="10" />
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+        </MudGrid>
+</MudLayout>
+@code{
+    private bool arrows = true;
+    private bool delimiters = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+}
+@code{ bool open = false;
 
+    void ToggleDrawer()
+    {
+        open = !open;
+    } }
+@code{
+    public IEnumerable<Car> Cars { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        Cars = new List<Car>();
+        Cars = await http.GetFromJsonAsync<IEnumerable<Car>>("https://dbuser13-funcapp.azurewebsites.net/api/GetCars");
+    }
+}

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BethanysPieShopHRM.Shared\BethanysPieShopHRM.Shared.csproj" />
+    <ProjectReference Include="..\MyFirstDevOpsProject.Shared\MyFirstDevOpsProject.Shared.csproj" />
   </ItemGroup>
 
 </Project>
